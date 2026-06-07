@@ -20,7 +20,7 @@ class CompraController {
 
       return res.status(201).json({
         mensagem:
-          "Compra processada com sucesso!",
+          "Compra realizada com sucesso",
         comprovante:
           resultado.comprovante,
       });

@@ -1,16 +1,19 @@
+const USUARIOS_API =
+  "http://localhost:3001";
+
 class UsuarioClient {
 
   async buscarPorId(id) {
 
     const response =
       await fetch(
-        `http://localhost:3001/usuarios/${id}`
+        `${USUARIOS_API}/usuarios/${id}`
       );
 
     if (!response.ok) {
 
       throw new Error(
-        "Erro ao buscar usuário"
+        "Erro ao consultar usuário"
       );
 
     }
@@ -26,7 +29,7 @@ class UsuarioClient {
 
     const response =
       await fetch(
-        `http://localhost:3001/usuarios/${id}/saldo`,
+        `${USUARIOS_API}/usuarios/${id}/saldo`,
         {
           method: "PUT",
 

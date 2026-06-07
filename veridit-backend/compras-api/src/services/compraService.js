@@ -19,26 +19,10 @@ class CompraService {
         usuario_id
       );
 
-    if (!usuario) {
-
-      throw new Error(
-        "Usuário não encontrado"
-      );
-
-    }
-
     const pacote =
-      await pacoteClient.buscarPorIdd(
+      await pacoteClient.buscarPorId(
         pacote_id
       );
-
-    if (!pacote) {
-
-      throw new Error(
-        "Pacote não encontrado"
-      );
-
-    }
 
     const compra =
       await compraRepository.create({
