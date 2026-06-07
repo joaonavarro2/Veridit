@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model compras {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  usuario_id       String?           @db.Uuid
+  pacote_id        String?           @db.Uuid
+  valor_pago       Decimal           @db.Decimal(10, 2)
+  data_compra      DateTime?         @default(now()) @db.Timestamptz(6)
+  status           String?           @default("Aprovado") @db.VarChar(50)
+  pacotes_creditos pacotes_creditos? @relation(fields: [pacote_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuarios         usuarios?         @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model pacotes_creditos {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome                String    @db.VarChar(100)
+  descricao           String?
+  quantidade_creditos Int
+  preco               Decimal   @db.Decimal(10, 2)
+  data_criacao        DateTime? @default(now()) @db.Timestamptz(6)
+  ativo               Boolean?  @default(true)
+  compras             compras[]
+}
+
+model usuarios {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome           String    @db.VarChar(100)
+  email          String    @unique @db.VarChar(150)
+  senha_hash     String    @db.VarChar(255)
+  saldo_creditos Int?      @default(0)
+  data_criacao   DateTime? @default(now()) @db.Timestamptz(6)
+  ativo          Boolean?  @default(true)
+  compras        compras[]
+}
