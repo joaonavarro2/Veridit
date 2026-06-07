@@ -1,11 +1,7 @@
-import { Router }
-from "express";
+import { Router } from "express";
 
 import pacoteController
 from "../controllers/pacoteController.js";
-
-import compraController
-from "../controllers/compraController.js";
 
 const router = Router();
 
@@ -15,10 +11,10 @@ router.get(
     pacoteController.listar(req, res)
 );
 
-router.post(
-  "/compras",
+router.get(
+  "/pacotes/:id",
   (req, res) =>
-    compraController.criar(req, res)
+    pacoteController.buscarPorId(req, res)
 );
 
 export default router;

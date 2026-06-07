@@ -1,11 +1,11 @@
 import compraRepository
 from "../repositories/compraRepository.js";
 
-import usuarioRepository
-from "../../auth/repositories/usuarioRepository.js";
+import usuarioClient
+from "../clients/usuarioClient.js";
 
-import pacoteRepository
-from "../repositories/pacoteRepository.js";
+import pacoteClient
+from "../clients/pacoteClient.js";
 
 class CompraService {
 
@@ -15,7 +15,7 @@ class CompraService {
   ) {
 
     const usuario =
-      await usuarioRepository.findById(
+      await usuarioClient.buscarPorId(
         usuario_id
       );
 
@@ -28,7 +28,7 @@ class CompraService {
     }
 
     const pacote =
-      await pacoteRepository.findById(
+      await pacoteClient.buscarPorIdd(
         pacote_id
       );
 
@@ -51,7 +51,7 @@ class CompraService {
       usuario.saldo_creditos +
       pacote.quantidade_creditos;
 
-    await usuarioRepository.atualizarSaldo(
+    await usuarioClient.atualizarSaldo(
       usuario_id,
       novoSaldo
     );

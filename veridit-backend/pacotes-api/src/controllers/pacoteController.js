@@ -24,6 +24,29 @@ class PacoteController {
 
   }
 
+  async buscarPorId(req, res) {
+
+    try {
+
+      const { id } = req.params;
+
+      const pacote =
+        await pacoteService.buscarPorId(id);
+
+      return res.status(200).json(
+        pacote
+      );
+
+    } catch (error) {
+
+      return res.status(404).json({
+        erro: error.message
+      });
+
+    }
+
+  }
+
 }
 
 export default new PacoteController();

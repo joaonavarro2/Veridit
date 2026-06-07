@@ -1,21 +1,22 @@
 import express from "express";
 import cors from "cors";
 
-import usuarioRoutes from "./routes/usuarioRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
+import pacoteRoutes
+from "./routes/pacoteRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use(usuarioRoutes);
-app.use(authRoutes);
+app.use(pacoteRoutes);
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3002;
 
 app.listen(PORT, () => {
+
   console.log(
-    `Usuarios API rodando na porta ${PORT}`
+    `Pacotes API rodando na porta ${PORT}`
   );
+
 });
