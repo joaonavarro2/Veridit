@@ -3,9 +3,6 @@ import { Router } from "express";
 import usuarioController
 from "../controllers/usuarioController.js";
 
-import authMiddleware
-from "../middlewares/authMiddleware.js";
-
 const router = Router();
 
 router.post(
@@ -16,14 +13,12 @@ router.post(
 
 router.get(
   "/usuarios/:id",
-  authMiddleware,
   (req, res) =>
     usuarioController.buscarPorId(req, res)
 );
 
 router.put(
   "/usuarios/:id/saldo",
-  authMiddleware,
   (req, res) =>
     usuarioController.atualizarSaldo(req, res)
 );
