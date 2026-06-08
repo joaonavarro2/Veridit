@@ -1,4 +1,5 @@
 import authRepository from "../repositories/authRepository.js";
+import jwt from "jsonwebtoken";
 
 class AuthService {
 
@@ -23,7 +24,22 @@ class AuthService {
 
     }
 
-    return usuario;
+    const token =
+      jwt.sign(
+        {
+          id: usuario.id,
+          email: usuario.email
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1d"
+        }
+      );
+
+    return {
+      usuario,
+      token
+    };
 
   }
 

@@ -8,10 +8,10 @@ class AuthController {
 
       const {
         email,
-        senha,
+        senha
       } = req.body;
 
-      const usuario =
+      const resultado =
         await authService.login(
           email,
           senha
@@ -19,13 +19,14 @@ class AuthController {
 
       return res.status(200).json({
         mensagem: "Login realizado",
-        usuario,
+        usuario: resultado.usuario,
+        token: resultado.token
       });
 
     } catch (error) {
 
       return res.status(401).json({
-        erro: error.message,
+        erro: error.message
       });
 
     }
