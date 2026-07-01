@@ -114,7 +114,8 @@ export default function Login() {
                     );
 
                   login(
-                    response.usuario.email
+                    response.usuario,
+                    response.token
                   );
 
                   toast.success(

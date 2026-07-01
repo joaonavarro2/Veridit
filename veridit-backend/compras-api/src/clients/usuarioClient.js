@@ -5,12 +5,26 @@ class UsuarioClient {
 
   async buscarPorId(id) {
 
+    console.log(
+      `[UsuarioClient] Buscando usuário ${id}`
+    );
+
     const response =
       await fetch(
-        `${USUARIOS_API}/usuarios/${id}`
+        `${USUARIOS_API}/internal/usuarios/${id}`
       );
 
+    console.log(
+      "Status:",
+      response.status
+    );
+
     if (!response.ok) {
+
+      const erro =
+        await response.text();
+
+      console.log(erro);
 
       throw new Error(
         "Erro ao consultar usuário"
@@ -27,9 +41,17 @@ class UsuarioClient {
     saldo_creditos
   ) {
 
+    console.log(
+      `[UsuarioClient] Atualizando saldo do usuário ${id}`
+    );
+
+    console.log({
+      saldo_creditos,
+    });
+
     const response =
       await fetch(
-        `${USUARIOS_API}/usuarios/${id}/saldo`,
+        `${USUARIOS_API}/internal/usuarios/${id}/saldo`,
         {
           method: "PUT",
 
@@ -44,7 +66,17 @@ class UsuarioClient {
         }
       );
 
+    console.log(
+      "Status atualização:",
+      response.status
+    );
+
     if (!response.ok) {
+
+      const erro =
+        await response.text();
+
+      console.log(erro);
 
       throw new Error(
         "Erro ao atualizar saldo"
@@ -52,7 +84,12 @@ class UsuarioClient {
 
     }
 
-    return await response.json();
+    const data =
+      await response.json();
+
+    console.log(data);
+
+    return data;
 
   }
 

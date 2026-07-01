@@ -1,9 +1,16 @@
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 
 export default function Billing() {
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const pacote =
+    location.state?.pacote;
 
   return (
     <DashboardLayout>
@@ -55,7 +62,7 @@ export default function Billing() {
         </div>
 
         <button
-          onClick={() => navigate("/payment")}
+          onClick={() => navigate("/payment", {state: {pacote,},})}
           className="mt-8 bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700"
         >
           Continue to Payment

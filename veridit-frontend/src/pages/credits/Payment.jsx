@@ -1,12 +1,80 @@
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import {
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
+import { useAuth } from "../../context/AuthContext";
+import { comprarPacote } from "../../api/paymentApi";
 
 export default function Payment() {
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { user } = useAuth();
+
+  const pacote =
+    location.state?.pacote;
+
+  async function confirmarCompra() {
+
+    if (!user) {
+
+      toast.error(
+        "Usuário não encontrado."
+      );
+
+      return;
+
+    }
+
+    if (!pacote) {
+
+      toast.error(
+        "Pacote não encontrado."
+      );
+
+      return;
+
+    }
+
+    try {
+
+      const resposta =
+        await comprarPacote(
+          user.id,
+          pacote.id
+        );
+
+      toast.success(
+        "Compra realizada com sucesso!"
+      );
+
+      setTimeout(() => {
+
+        navigate(
+          "/payment-success",
+          {
+            state: resposta,
+          }
+        );
+
+      }, 1200);
+
+    } catch (error) {
+
+      toast.error(
+        error.message
+      );
+
+    }
+
+  }
 
   return (
+
     <DashboardLayout>
 
       <h1 className="text-5xl font-bold mb-10">
@@ -32,7 +100,7 @@ export default function Payment() {
           </div>
 
           <button
-            onClick={() => navigate("/payment-success")}
+            onClick={confirmarCompra}
             className="w-full mt-8 bg-green-600 text-white p-4 rounded-xl hover:bg-green-700"
           >
             Confirm PIX Payment
@@ -79,13 +147,7 @@ export default function Payment() {
             </div>
 
             <button
-              onClick={() => {
-                  toast.success("PIX payment confirmed");
-
-                  setTimeout(() => {
-                    navigate("/payment-success");
-                  }, 1500);
-                }}
+              onClick={confirmarCompra}
               className="bg-blue-600 text-white p-4 rounded-xl hover:bg-blue-700"
             >
               Confirm Card Payment
@@ -102,13 +164,7 @@ export default function Payment() {
             </h3>
 
             <button
-              onClick={() => {
-                  toast.success("Card payment approved");
-
-                  setTimeout(() => {
-                    navigate("/payment-success");
-                  }, 1500);
-                }}
+              onClick={confirmarCompra}
               className="w-full bg-sky-400 text-white p-4 rounded-xl hover:bg-sky-500"
             >
               Pay with Mercado Pago
@@ -121,5 +177,7 @@ export default function Payment() {
       </div>
 
     </DashboardLayout>
+
   );
+
 }

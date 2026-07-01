@@ -10,6 +10,10 @@ class AuthService {
 
     if (!usuario) {
 
+      console.error(
+        `[LOGIN] Tentativa com email inexistente: ${email}`
+      );
+
       throw new Error(
         "Email ou senha inválidos"
       );
@@ -17,6 +21,10 @@ class AuthService {
     }
 
     if (usuario.senha_hash !== senha) {
+
+      console.error(
+        `[LOGIN] Senha incorreta para: ${email}`
+      );
 
       throw new Error(
         "Email ou senha inválidos"
@@ -35,6 +43,10 @@ class AuthService {
           expiresIn: "1d"
         }
       );
+
+    console.log(
+      `[LOGIN] Usuário autenticado: ${usuario.email}`
+    );
 
     return {
       usuario,

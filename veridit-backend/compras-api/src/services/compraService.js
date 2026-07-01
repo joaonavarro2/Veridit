@@ -14,15 +14,51 @@ class CompraService {
     pacote_id
   ) {
 
+    console.log(
+      `[COMPRA] Iniciando compra para usuário ${usuario_id}`
+    );
+
     const usuario =
       await usuarioClient.buscarPorId(
         usuario_id
       );
 
+    if (!usuario) {
+
+      console.error(
+        `[COMPRA] Usuário ${usuario_id} não encontrado`
+      );
+
+      throw new Error(
+        "Usuário não encontrado"
+      );
+
+    }
+
+    console.log(
+      `[COMPRA] Usuário encontrado: ${usuario.nome}`
+    );
+
     const pacote =
       await pacoteClient.buscarPorId(
         pacote_id
       );
+
+    if (!pacote) {
+
+      console.error(
+        `[COMPRA] Pacote ${pacote_id} não encontrado`
+      );
+
+      throw new Error(
+        "Pacote não encontrado"
+      );
+
+    }
+
+    console.log(
+      `[COMPRA] Pacote encontrado: ${pacote.nome}`
+    );
 
     const compra =
       await compraRepository.create({
@@ -31,6 +67,10 @@ class CompraService {
         valor_pago: pacote.preco,
       });
 
+    console.log(
+      `[COMPRA] Compra registrada: ${compra.id}`
+    );
+
     const novoSaldo =
       usuario.saldo_creditos +
       pacote.quantidade_creditos;
@@ -38,6 +78,10 @@ class CompraService {
     await usuarioClient.atualizarSaldo(
       usuario_id,
       novoSaldo
+    );
+
+    console.log(
+      `[COMPRA] Saldo atualizado para ${novoSaldo}`
     );
 
     return {

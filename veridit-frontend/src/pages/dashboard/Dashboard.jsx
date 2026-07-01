@@ -8,10 +8,22 @@ import {
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Dashboard() {
 
   const navigate = useNavigate();
+  const {
+      user,
+      atualizarUsuario,
+    } = useAuth();
+
+    useEffect(() => {
+
+      atualizarUsuario();
+
+    }, []);
 
   return (
 
@@ -74,7 +86,7 @@ export default function Dashboard() {
           <div>
 
             <h2 className="text-5xl font-bold text-white">
-              150
+               {user?.saldo_creditos ?? 0}
             </h2>
 
             <p className="text-slate-400 text-lg mt-2">

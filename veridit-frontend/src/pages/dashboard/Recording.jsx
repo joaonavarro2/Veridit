@@ -15,10 +15,21 @@ import {
 
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Recording() {
 
   const navigate = useNavigate();
+
+  const {
+      user,
+      atualizarUsuario,
+    } = useAuth();
+
+    useEffect(() => {
+      atualizarUsuario();
+    }, []);
 
   return (
 
@@ -43,11 +54,11 @@ export default function Recording() {
         <div className="flex items-center gap-4">
 
           <div className="bg-[#151515] px-4 py-3 rounded-2xl text-blue-500 font-semibold text-lg">
-            Credits: 150
+            Credits: {user?.saldo_creditos ?? 0}
           </div>
 
           <div className="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center text-white text-xl font-bold">
-            U
+           {user?.nome?.charAt(0).toUpperCase() ?? "U"}
           </div>
 
         </div>
@@ -84,11 +95,24 @@ export default function Recording() {
             <div className="bg-[#111111] border-t border-[#1f1f1f] p-5 flex flex-wrap items-center gap-8">
 
               <button
-                onClick={() =>
+                onClick={async () => {
+
+                  await atualizarUsuario();
+
+                  if ((user?.saldo_creditos ?? 0) <= 0) {
+
+                    toast.error(
+                      "You don't have enough credits."
+                    );
+
+                    return;
+                  }
+
                   toast.success(
                     "Recording started successfully"
-                  )
-                }
+                  );
+
+                }}
                 className="flex items-center gap-3 text-white text-lg md:text-xl font-semibold hover:text-blue-500 transition"
               >
 

@@ -1,6 +1,31 @@
 const API_URL =
   import.meta.env.VITE_USUARIOS_API;
 
+export async function getUsuario(id, token) {
+
+  const response =
+    await fetch(
+      `${API_URL}/usuarios/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if (!response.ok) {
+
+    throw new Error(data.erro);
+
+  }
+
+  return data;
+
+}
+
 export async function loginRequest(
   email,
   senha
